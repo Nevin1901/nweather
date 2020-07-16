@@ -1,6 +1,7 @@
 #include <iostream>
 #include "HTTPRequest.hpp"
 #include "nlohmann/json.hpp"
+#include "nevinAPI/nweatherAPI.h"
 
 /*
  *	Hello random person debugging this program
@@ -20,6 +21,9 @@ int main(int argc, char *argv[]) {
 		std::cerr << "Usage: " << argv[0] << " 'COUNTRY NAME'" << std::endl;
 		return 0;
 	}
+	nweatherAPI nWeatherAPI;
+	std::cout << nWeatherAPI.getCountryWeather("Amsterdam", "metric") << std::endl;
+	/*
 	try
 	{
 		std::string countryArguments = argv[1];
@@ -39,6 +43,7 @@ int main(int argc, char *argv[]) {
 	{
 		std::cerr << "Request failed, error: " << e.what() << "\n";
 	}
+	*/
 	return 0;
 }
 

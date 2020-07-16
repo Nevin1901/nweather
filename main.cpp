@@ -1,6 +1,4 @@
 #include <iostream>
-#include "HTTPRequest.hpp"
-#include "nlohmann/json.hpp"
 #include "nevinAPI/nweatherAPI.h"
 
 /*
@@ -21,6 +19,7 @@ int main(int argc, char *argv[]) {
 		std::cerr << "Usage: " << argv[0] << " 'COUNTRY NAME'" << std::endl;
 		return 0;
 	}
+	
 	nweatherAPI nWeatherAPI;
 	std::cout << nWeatherAPI.getCountryWeather(argv[1], "metric") << std::endl;
 	/*

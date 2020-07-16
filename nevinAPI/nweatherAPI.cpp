@@ -2,6 +2,7 @@
 #include "nweatherAPI.h"
 #include "../HTTPRequest.hpp"
 #include "../nlohmann/json.hpp"
+#include <stdlib.h>
 
 using json = nlohmann::json; 
 
@@ -17,7 +18,7 @@ int nweatherAPI::getCountryWeather(std::string location, std::string units)
 		if (result["main"]["temp"] == nlohmann::detail::value_t::null)
 		{
 			std::cerr << "Failed to parse weather data" << "\n";
-			return 0;
+			exit(-3000);
 		}
 		else
 		{

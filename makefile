@@ -1,13 +1,3 @@
-CXX = g++
-
-CXXFLAGS = -o
-
-PROGRAM_NAME = nweather
-
-.DEFAULT_GOAL := main
-
-
-
-.main:
-	$(CXX) *.cpp $(CXXFLAGS) $(PROGRAM_NAME)
-
+all:
+	g++ main.cpp HTTPRequest.hpp nlohmann/json.hpp nevinAPI/nweatherAPI.cpp nevinAPI/nweatherAPI.h -o nweather
+	./nweather Amsterdam

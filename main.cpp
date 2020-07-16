@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 	nweatherAPI nWeatherAPI;
-	std::cout << nWeatherAPI.getCountryWeather("Amsterdam", "metric") << std::endl;
+	std::cout << nWeatherAPI.getCountryWeather(argv[1], "metric") << std::endl;
 	/*
 	try
 	{

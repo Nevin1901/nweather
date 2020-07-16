@@ -11,10 +11,10 @@ bool checkUnits(std::string unit);
 
 int nweatherAPI::getCountryWeather(std::string location, std::string units)
 {
-	if (checkUnits)
+	if (checkUnits(units) == true)
 	{
-		json result = json::parse(makeLocalWeatherAPICall(location, units);
-		if (result["main"]["temp"] == nlohman::detail::value_t::null)
+		json result = json::parse(makeLocalWeatherAPICall(location, units));
+		if (result["main"]["temp"] == nlohmann::detail::value_t::null)
 		{
 			std::cerr << "Failed to parse weather data" << "\n";
 			return 0;
@@ -24,6 +24,11 @@ int nweatherAPI::getCountryWeather(std::string location, std::string units)
 			return (int)result["main"]["temp"];
 		}
 	}
+	else
+	{
+		std::cout << "incorrect units" << std::endl;
+	}
+	return 0;
 }
 
 std::string nweatherAPI::makeLocalWeatherAPICall(std::string location, std::string units) 
@@ -32,14 +37,14 @@ std::string nweatherAPI::makeLocalWeatherAPICall(std::string location, std::stri
 	{
 		std::string apiCallString = "api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=745e71977952cc564f59aada718bb85c&units=" + units;
 		http::Request request(apiCallString);
-		const http:Response response = request.send("GET");
+		const http::Response response = request.send("GET");
 		std::string resData = std::string(response.body.begin(), response.body.end());
 		return resData;
 		
 	}
-	catch (const std::exeption& e)
+	catch (const std::exception& e)
 	{
-		std::cerr << "Api call request failed, error: " << e.what() << "\n";
+		std::cerr << "Api call request failed, error" << "\n";
 	}
 	return "ERROR";
 }

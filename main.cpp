@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 
 	if (radius == true && humidity == true)
 	{
-		std::cerr << "Error: Can't use himidity with radius weather" << "\n";
+		std::cerr << "Error: Can't use humidity with radius weather" << "\n";
 		exit(-1);
 	}
 

@@ -16,27 +16,11 @@ int main(int argc, char *argv[]) {
 	std::string countryInput = "";
 	using json = nlohmann::json;
 
-
-	/*if (argc < 2)
-	{
-		std::cerr << "Usage: " << argv[0] << " 'COUNTRY NAME'" << std::endl;
-		return 0;
-	}
-	if (argc > 2)
-	{
-		std::cerr << "Usage: " << argv[0] << " 'COUNTRY NAME'" << std::endl;
-		return 0;
-	}
-	*/
 	int m;
-	while ((m = getopt(argc, argv, "c:ukirhp:")) != -1) // help, kelvin, imperial, humidity, radius around location, lat,long, 
+	while ((m = getopt(argc, argv, "ukirhp: ")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
 	{
 		switch(m)
 		{
-			case 'c':
-				country = true;
-				countryInput = optarg;
-				break;
 			case 'u':
 				help = true;
 				break;
@@ -59,35 +43,27 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	if (argv[optind] == NULL)
+	{
+		std::cerr << "Error: No Country" << "\n";
+		exit(0);
+	}
+	countryInput = argv[optind];
+
 	if (radius == true && humidity == true)
 	{
 		std::cerr << "Error: Can't use himidity with radius weather" << "\n";
 		exit(-1);
 	}
 
+	else if (country == true && latLong == true)
+	{
+		std::cerr << "Error: Can't input country and have coordinates" << "\n";
+	}
+
 	nweatherAPI nWeatherAPI;
-	std::cout << nWeatherAPI.getCountryWeather(countryInput, units) << std::endl;
-	/*
-	try
-	{
-		std::string countryArguments = argv[1];
-		std::string apiCallString = "api.openweathermap.org/data/2.5/weather?q=" + countryArguments + "&appid=745e71977952cc564f59aada718bb85c&units=metric";
-		http::Request request(apiCallString);
-		const http::Response response = request.send("GET");
-		std::string resData = std::string(response.body.begin(), response.body.end());
-		json result = json::parse(resData);
-		if (result["main"]["temp"] == nlohmann::detail::value_t::null) {
-			std::cout << "Unknown Location\n";
-		}
-		else {
-			std::cout << result["main"]["temp"] << std::endl;
-		}
-	}
-	catch (const std::exception& e)
-	{
-		std::cerr << "Request failed, error: " << e.what() << "\n";
-	}
-	*/
+	std::cout << nWeatherAPI.getCountryWeather(countryInput, units, humidity) << std::endl;
+
 	return 0;
 }
 

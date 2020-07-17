@@ -6,11 +6,11 @@
 
 using json = nlohmann::json; 
 
-std::string getCountryWeather(std::string location, std::string units);
+std::string getCountryWeather(std::string location, std::string units, bool humidity);
 std::string makeLocalWeatherAPICall(std::string location, std::string units);
 bool checkUnits(std::string unit);
 
-int nweatherAPI::getCountryWeather(std::string location, std::string units)
+int nweatherAPI::getCountryWeather(std::string location, std::string units, bool humidity)
 {
 	if (checkUnits(units) == true)
 	{
@@ -20,6 +20,12 @@ int nweatherAPI::getCountryWeather(std::string location, std::string units)
 			std::cerr << "Failed to parse weather data" << "\n";
 			exit(-3000);
 		}
+
+		if (humidity == true)
+		{
+			return (int)result["main"]["humidity"];
+		}
+
 		else
 		{
 			return (int)result["main"]["temp"];

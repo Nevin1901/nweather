@@ -6,7 +6,7 @@
 
 class nweatherAPI {
 	public:
-		int getCountryWeather(std::string location, std::string units);
+		int getCountryWeather(std::string location, std::string units, bool humidity);
 	private:
 		std::string makeLocalWeatherAPICall(std::string location, std::string units);
 		bool checkUnits(std::string unit);

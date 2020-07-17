@@ -28,6 +28,7 @@ int nweatherAPI::getCountryWeather(std::string location, std::string units)
 	else
 	{
 		std::cout << "incorrect units" << std::endl;
+		exit(-7000);
 	}
 	return 0;
 }
@@ -36,8 +37,8 @@ std::string nweatherAPI::makeLocalWeatherAPICall(std::string location, std::stri
 {
 	try
 	{
-		std::string apiCallString = "api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=745e71977952cc564f59aada718bb85c&units=" + units;
-		http::Request request(apiCallString);
+		//std::string apiCallString = "api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=745e71977952cc564f59aada718bb85c&units=" + units;
+		http::Request request((std::string)"api.openweathermap.org/data/2.5/weather?q=" + (std::string)location + "&appid=745e71977952cc564f59aada718bb85c&units=" + (std::string)units);
 		const http::Response response = request.send("GET");
 		std::string resData = std::string(response.body.begin(), response.body.end());
 		return resData;
@@ -46,6 +47,7 @@ std::string nweatherAPI::makeLocalWeatherAPICall(std::string location, std::stri
 	catch (const std::exception& e)
 	{
 		std::cerr << "Api call request failed, error" << "\n";
+		exit(-500);
 	}
 	return "ERROR";
 }

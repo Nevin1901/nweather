@@ -1,15 +1,23 @@
 #include <iostream>
 #include "nevinAPI/nweatherAPI.h"
+#include <unistd.h>
+#include <cstdlib>
 
 /*
  *	Hello random person debugging this program
  *	Please don't steal my api key, it is free to create a new one
  */
 
-using json = nlohmann::json;
-
 int main(int argc, char *argv[]) {
-	if (argc < 2)
+	
+	bool country = false, help = false, humidity = false, radius = false, latLong = false;
+	std::string units = "metric";
+	std::string latLongInput = "";
+	std::string countryInput = "";
+	using json = nlohmann::json;
+
+
+	/*if (argc < 2)
 	{
 		std::cerr << "Usage: " << argv[0] << " 'COUNTRY NAME'" << std::endl;
 		return 0;
@@ -19,9 +27,46 @@ int main(int argc, char *argv[]) {
 		std::cerr << "Usage: " << argv[0] << " 'COUNTRY NAME'" << std::endl;
 		return 0;
 	}
-	
+	*/
+	int m;
+	while ((m = getopt(argc, argv, "c:ukirhp:")) != -1) // help, kelvin, imperial, humidity, radius around location, lat,long, 
+	{
+		switch(m)
+		{
+			case 'c':
+				country = true;
+				countryInput = optarg;
+				break;
+			case 'u':
+				help = true;
+				break;
+			case 'k':
+				units = "kelvin";
+				break;
+			case 'i':
+				units = "imperial";
+				break;
+			case 'r':
+				radius = true;
+				break;
+			case 'h':
+				humidity = true;
+				break;
+			case 'p':
+				latLong = true;
+				latLongInput = optarg;
+				break;
+		}
+	}
+
+	if (radius == true && humidity == true)
+	{
+		std::cerr << "Error: Can't use himidity with radius weather" << "\n";
+		exit(-1);
+	}
+
 	nweatherAPI nWeatherAPI;
-	std::cout << nWeatherAPI.getCountryWeather(argv[1], "metric") << std::endl;
+	std::cout << nWeatherAPI.getCountryWeather(countryInput, units) << std::endl;
 	/*
 	try
 	{

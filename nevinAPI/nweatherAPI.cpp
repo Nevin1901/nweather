@@ -5,14 +5,12 @@
 #include <stdlib.h>
 
 using json = nlohmann::json; 
-
+/*
 std::string getCountryWeather(std::string location, std::string units);
 std::string makeLocalWeatherAPICall(std::string location, std::string units);
 int getCountryHumidity(std::string location, std::string units);
-std::string makeLocalWeatherAPICallByCoords(std::string location, std::string lat, std::string lon, std::string units);
-
-bool checkUnits(std::string unit);
-
+std::string makeLocalWeatherAPICallByCoords(std::string lat, std::string lon, std::string units);
+*/
 int nweatherAPI::getCountryWeather(std::string location, std::string units)
 {
 	if (checkUnits(units) == true)
@@ -60,11 +58,11 @@ int nweatherAPI::getCountryHumidity(std::string location, std::string units)
 	return 0;
 }
 
-int nweatherAPI::getCountryWeatherByCoords(std::string location, std::string lat, std::string lon, std::string units)
+int nweatherAPI::getCountryWeatherByCoords(std::string lat, std::string lon, std::string units)
 {
 	if (checkUnits(units) == true)
 	{
-		json result = json::parse(makeLocalWeatherAPICallByCoords(location, lat, lon, units));
+		json result = json::parse(makeLocalWeatherAPICallByCoords(lat, lon, units));
 		if (result["main"]["temp"] == nlohmann::detail::value_t::null)
 		{
 			std::cerr << "Failed to parse temperature data" << "\n";
@@ -83,14 +81,14 @@ int nweatherAPI::getCountryWeatherByCoords(std::string location, std::string lat
 	return 0;
 }
 
-std::string nweatherAPI::makeLocalWeatherAPICallByCoords(std::string location, std::string lat, std::string lon, std::string units)
+std::string nweatherAPI::makeLocalWeatherAPICallByCoords(std::string apiLat, std::string apiLon, std::string units)
 {
 	try
 	{
-		http::Request request((std::string)"api.openweathermap.org/data/2.5/weather?lat=" + (std::string)lat + "&lon=" + (std::string)lon + "&appid=745e71977952cc564f59aada718bb85");
-	 const http::Response response = request.send("GET");
-	 std::string resData = std::string(response.body.begin(), response.body.end());
-	 return resData;
+		http::Request request("http://api.openweathermap.org/data/2.5/weather?lat=" + apiLat + "&lon=" + apiLon + "&appid=745e71977952cc564f59aada718bb85c&units=" + units);
+		const http::Response response = request.send("GET");
+	 	std::string resData = std::string(response.body.begin(), response.body.end());
+	 	return resData;
 	}
 	catch (const std::exception& e)
 	{
@@ -104,7 +102,6 @@ std::string nweatherAPI::makeLocalWeatherAPICall(std::string location, std::stri
 {
 	try
 	{
-		//std::string apiCallString = "api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=745e71977952cc564f59aada718bb85c&units=" + units;
 		http::Request request((std::string)"api.openweathermap.org/data/2.5/weather?q=" + (std::string)location + "&appid=745e71977952cc564f59aada718bb85c&units=" + (std::string)units);
 		const http::Response response = request.send("GET");
 		std::string resData = std::string(response.body.begin(), response.body.end());

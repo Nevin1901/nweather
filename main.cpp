@@ -12,12 +12,13 @@ int main(int argc, char *argv[]) {
 	
 	bool country = false, help = false, humidity = false, radius = false, latLong = false;
 	std::string units = "metric";
-	std::string latLongInput = "";
+	std::string latInput;
+	std::string lonInput;
 	std::string countryInput = "";
 	using json = nlohmann::json;
 
 	int m;
-	while ((m = getopt(argc, argv, "ukirhp: ")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
+	while ((m = getopt(argc, argv, "ukirhlo")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
 	{
 		switch(m)
 		{
@@ -36,23 +37,30 @@ int main(int argc, char *argv[]) {
 			case 'h':
 				humidity = true;
 				break;
-			case 'p':
+			case 'l':
+				latInput = optarg;
 				latLong = true;
-				latLongInput = optarg;
+				break;
+			case 'o':
+				lonInput = optarg;
 				break;
 		}
 	}
-	
-	nweatherAPI nWeatherAPI;
 
 	if (argv[optind] == NULL)
 	{
 		std::cerr << "Error: No Country" << "\n";
-		exit(0);
+		exit(-1);
 	}
-	countryInput = argv[optind];
 
-	if (radius == true && humidity == true)
+	//else if (latInput == NULL || lonInput == NULL)
+	//{
+//		std::cerr << "Error: Must have lat and lon coords" << "\n";
+//		exit(-1);
+//	}
+
+	
+	else if (radius == true && humidity == true)
 	{
 		std::cerr << "Error: Can't use humidity with radius weather" << "\n";
 		exit(-1);
@@ -61,10 +69,20 @@ int main(int argc, char *argv[]) {
 	else if (country == true && latLong == true)
 	{
 		std::cerr << "Error: Can't input country and have coordinates" << "\n";
-		exit(-2);
+		exit(-1);
 	}
 
+	else
+	{
+		country = true;
+		countryInput = argv[optind];
+	}
+	
+	nweatherAPI nWeatherAPI;
+
 	if (humidity == true) std::cout << nWeatherAPI.getCountryHumidity(countryInput, units) << std::endl;
+
+	else if (latLong == true) std::cout << nWeatherAPI.getCountryWeatherByCoords(countryInput, latInput, lonInput, units) << std::endl;
 
 	else std::cout << nWeatherAPI.getCountryWeather(countryInput, units) << std::endl;
 

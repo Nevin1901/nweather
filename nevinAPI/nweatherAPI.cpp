@@ -6,11 +6,13 @@
 
 using json = nlohmann::json; 
 
-std::string getCountryWeather(std::string location, std::string units, bool humidity);
+std::string getCountryWeather(std::string location, std::string units);
 std::string makeLocalWeatherAPICall(std::string location, std::string units);
+int getCountryHumidity(std::string location, std::string units);
+
 bool checkUnits(std::string unit);
 
-int nweatherAPI::getCountryWeather(std::string location, std::string units, bool humidity)
+int nweatherAPI::getCountryWeather(std::string location, std::string units)
 {
 	if (checkUnits(units) == true)
 	{
@@ -21,14 +23,32 @@ int nweatherAPI::getCountryWeather(std::string location, std::string units, bool
 			exit(-3000);
 		}
 
-		if (humidity == true)
-		{
-			return (int)result["main"]["humidity"];
-		}
-
 		else
 		{
 			return (int)result["main"]["temp"];
+		}
+	}
+	else
+	{
+		std::cout << "incorrect units" << std::endl;
+		exit(-7000);
+	}
+	return 0;
+}
+
+int nweatherAPI::getCountryHumidity(std::string location, std::string units)
+{
+	if (checkUnits(units) == true)
+	{
+		json result = json::parse(makeLocalWeatherAPICall(location, units));
+		if (result["main"]["humidity"] == nlohmann::detail::value_t::null)
+		{
+			std::cerr << "Failed to parse humidity data" << "\n";
+			exit(-3100);
+		}
+		else
+		{
+			return (int)result["main"]["humidity"];
 		}
 	}
 	else

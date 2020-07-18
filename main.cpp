@@ -42,6 +42,8 @@ int main(int argc, char *argv[]) {
 				break;
 		}
 	}
+	
+	nweatherAPI nWeatherAPI;
 
 	if (argv[optind] == NULL)
 	{
@@ -59,10 +61,12 @@ int main(int argc, char *argv[]) {
 	else if (country == true && latLong == true)
 	{
 		std::cerr << "Error: Can't input country and have coordinates" << "\n";
+		exit(-2);
 	}
 
-	nweatherAPI nWeatherAPI;
-	std::cout << nWeatherAPI.getCountryWeather(countryInput, units, humidity) << std::endl;
+	if (humidity == true) std::cout << nWeatherAPI.getCountryHumidity(countryInput, units) << std::endl;
+
+	else std::cout << nWeatherAPI.getCountryWeather(countryInput, units) << std::endl;
 
 	return 0;
 }

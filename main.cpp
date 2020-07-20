@@ -18,12 +18,14 @@ int main(int argc, char *argv[]) {
 	using json = nlohmann::json;
 
 	int m;
-	while ((m = getopt(argc, argv, "ukirhl:o:")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
+	while ((m = getopt(argc, argv, "ukirhc")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
 	{
 		switch(m)
 		{
 			case 'u':
 				help = true;
+				std::cout << "Usage: " << argv[0] << " -u (usage) -k (kelvin) -i (imperial) -r (radius) -h (humidity) -c (coordinates) 'Country name' Country" << "\n";
+				exit(0);
 				break;
 			case 'k':
 				units = "kelvin";
@@ -37,27 +39,31 @@ int main(int argc, char *argv[]) {
 			case 'h':
 				humidity = true;
 				break;
-			case 'l':
-				latInput = optarg;
+			case 'c':
+				if (argv[optind] == NULL || argv[optind] == NULL)
+				{
+					std::cerr << "Error: Must have latitude and longitude when using -c flag" << "\n";
+					exit(-1);
+				}
 				latLong = true;
-				break;
-			case 'o':
-				lonInput = optarg;
+				latInput = argv[optind];
+				lonInput = argv[optind + 1];
 				break;
 		}
 	}
 
-	if (argv[optind] != NULL) 
+	if (latLong == false && radius == false)
 	{
+		if (argv[optind] == NULL && latLong == false)
+		{
+			std::cerr << "Error: No Country" << "\n";
+			exit(-1000);
+		}
+		countryInput = argv[optind];
 		country = true;
-
 	}
 	
-	if (argv[optind] == NULL && latLong == false)
-	{
-		std::cerr << "Error: No Country" << "\n";
-		exit(-1000);
-	}
+
 
 	if (radius == true && humidity == true)
 	{
@@ -71,11 +77,6 @@ int main(int argc, char *argv[]) {
 		exit(-1);
 	}
 
-	if (country == true)
-	{
-		countryInput = argv[optind];
-	}
-	
 	nweatherAPI nWeatherAPI;
 
 	if (humidity == true)
@@ -90,8 +91,17 @@ int main(int argc, char *argv[]) {
 		exit(0);
 	}
 
-	else std::cout << nWeatherAPI.getCountryWeather(countryInput, units) << std::endl;
+	if (country == true)
+	{
+		std::cout << nWeatherAPI.getCountryWeather(countryInput, units) << std::endl;
+		exit(0);
+	}
 
+	else
+	{
+		std::cout << "whaaat" << "\n";
+		exit(0);
+	}
 	return 0;
 }
 

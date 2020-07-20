@@ -1,15 +1,15 @@
 # nweather
 
-A simple command line tool which allows you to get the weather from any country
+A simple command line tool which allows you to get the weather from any country, and more
 
 ![1](images/1.png)
 
 ## Usage
-`nweather 'COUNTRY NAME'`
+`nweather -u (usage) -k (kelvin) -i (imperial) -r (radius) -h (humidity) -c (coordinates) 'Country name' Country`
 so if you wanted to get the weather for New York
 `nweather 'New York'`
 
 ## Building
-`g++ main.cpp -o nweather`
+`make`
 Then move to /bin/
 

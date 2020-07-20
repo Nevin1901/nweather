@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
 	
 	bool country = false, help = false, humidity = false, radius = false, latLong = false;
 	std::string units = "metric";
-	std::string countryInput = "";
+	std::string countryInput;
 	std::string latInput;
 	std::string lonInput;
 	using json = nlohmann::json;

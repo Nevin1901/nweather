@@ -11,7 +11,7 @@ std::string makeLocalWeatherAPICall(std::string location, std::string units);
 int getCountryHumidity(std::string location, std::string units);
 std::string makeLocalWeatherAPICallByCoords(std::string lat, std::string lon, std::string units);
 */
-int nweatherAPI::getCountryWeather(std::string location, std::string units)
+int nweatherAPI::getCountryWeather(std::string& location, std::string& units)
 {
 	if (checkUnits(units) == true)
 	{
@@ -35,7 +35,7 @@ int nweatherAPI::getCountryWeather(std::string location, std::string units)
 	return 0;
 }
 
-int nweatherAPI::getCountryHumidity(std::string location, std::string units)
+int nweatherAPI::getCountryHumidity(std::string& location, std::string& units)
 {
 	if (checkUnits(units) == true)
 	{
@@ -58,7 +58,7 @@ int nweatherAPI::getCountryHumidity(std::string location, std::string units)
 	return 0;
 }
 
-int nweatherAPI::getCountryWeatherByCoords(std::string lat, std::string lon, std::string units)
+int nweatherAPI::getCountryWeatherByCoords(std::string& lat, std::string& lon, std::string& units)
 {
 	if (checkUnits(units) == true)
 	{
@@ -81,7 +81,7 @@ int nweatherAPI::getCountryWeatherByCoords(std::string lat, std::string lon, std
 	return 0;
 }
 
-std::string nweatherAPI::makeLocalWeatherAPICallByCoords(std::string apiLat, std::string apiLon, std::string units)
+std::string nweatherAPI::makeLocalWeatherAPICallByCoords(std::string& apiLat, std::string& apiLon, std::string& units)
 {
 	try
 	{
@@ -98,7 +98,7 @@ std::string nweatherAPI::makeLocalWeatherAPICallByCoords(std::string apiLat, std
 	return "ERROR";
 }
 
-std::string nweatherAPI::makeLocalWeatherAPICall(std::string location, std::string units) 
+std::string nweatherAPI::makeLocalWeatherAPICall(std::string& location, std::string& units) 
 {
 	try
 	{
@@ -116,7 +116,7 @@ std::string nweatherAPI::makeLocalWeatherAPICall(std::string location, std::stri
 	return "ERROR";
 }
 
-bool nweatherAPI::checkUnits(std::string unit)
+bool nweatherAPI::checkUnits(std::string& unit)
 {
 	std::string metrics[3] = {"metric", "kelvin", "imperial"};
 	int metricSize = *(&metrics + 1) - metrics;

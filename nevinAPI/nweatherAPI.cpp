@@ -79,6 +79,46 @@ int nweatherAPI::getCountryWeatherByCoords(std::string_view lat, std::string_vie
 	}
 }
 
+std::map<std::string, int> nweatherAPI::getRadiusWeather(std::string_view lat, std::string_view lon, std::string_view count, std::string_view units)
+{
+	if (checkUnits(units))
+	{
+		json result = json::parse(makeRadiusWeatherAPICall(lat, lon, count, units));
+		if (result["accurate"] == nlohmann::detail::value_t::null)
+		{
+			std::cerr << "Failed to parse temperature data" << "\n";
+			exit(-1);
+		}
+		else
+		{
+			std::map<std::string, int> countries;
+			std::cout << result << std::endl;
+			return countries;
+		}
+	}
+	else
+	{
+		std::cerr << "incorrect units" << std::endl;
+		exit(-1);
+	}
+}
+
+std::string nweatherAPI::makeRadiusWeatherAPICall(std::string_view lat, std::string_view lon, std::string_view count, std::string_view units)
+{
+	try
+	{
+		http::Request request(static_cast<std::string>("http://api.openweathermap.org/data/2.5/find?lat=" + static_cast<std::string>(lat) + "&lon=" + static_cast<std::string>(lon) +"&cnt=" + static_cast<std::string>(count) + "&appid=745e71977952cc564f59aada718bb85c"));
+		const http::Response response = request.send("GET");
+		std::string responseData = std::string(response.body.begin(), response.body.end());
+		return responseData;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Api call request failed, error " << e.what() << "\n";
+		exit(-1);
+	}
+}
+
 std::string nweatherAPI::makeLocalWeatherAPICallByCoords(std::string_view apiLat, std::string_view apiLon, std::string_view units)
 {
 	try

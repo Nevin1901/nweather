@@ -84,7 +84,7 @@ std::map<std::string, int> nweatherAPI::getRadiusWeather(std::string_view lat, s
 	if (checkUnits(units))
 	{
 		json result = json::parse(makeRadiusWeatherAPICall(lat, lon, count, units));
-		if (result["accurate"] == nlohmann::detail::value_t::null)
+		if (result["cod"] == nlohmann::detail::value_t::null)
 		{
 			std::cerr << "Failed to parse temperature data" << "\n";
 			exit(-1);
@@ -92,7 +92,11 @@ std::map<std::string, int> nweatherAPI::getRadiusWeather(std::string_view lat, s
 		else
 		{
 			std::map<std::string, int> countries;
-			std::cout << result << std::endl;
+			for (auto& el : result["list"].items())
+			{
+				countries.insert({static_cast<std::string>(el.value()["name"]), static_cast<int>(el.value()["main"]["temp"])});
+			//	std::cout << el.value()["name"] << " : " << el.value()["main"]["temp"] << std::endl;
+			}
 			return countries;
 		}
 	}
@@ -107,7 +111,7 @@ std::string nweatherAPI::makeRadiusWeatherAPICall(std::string_view lat, std::str
 {
 	try
 	{
-		http::Request request(static_cast<std::string>("http://api.openweathermap.org/data/2.5/find?lat=" + static_cast<std::string>(lat) + "&lon=" + static_cast<std::string>(lon) +"&cnt=" + static_cast<std::string>(count) + "&appid=745e71977952cc564f59aada718bb85c"));
+		http::Request request(static_cast<std::string>("http://api.openweathermap.org/data/2.5/find?lat=" + static_cast<std::string>(lat) + "&lon=" + static_cast<std::string>(lon) +"&cnt=" + static_cast<std::string>(count) + "&units=" + static_cast<std::string>(units) + "&appid=745e71977952cc564f59aada718bb85c"));
 		const http::Response response = request.send("GET");
 		std::string responseData = std::string(response.body.begin(), response.body.end());
 		return responseData;

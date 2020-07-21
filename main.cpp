@@ -15,10 +15,11 @@ int main(int argc, char *argv[]) {
 	std::string countryInput;
 	std::string latInput;
 	std::string lonInput;
+	std::string radiusCount;
 	using json = nlohmann::json;
 
 	int m;
-	while ((m = getopt(argc, argv, "ukirhc")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
+	while ((m = getopt(argc, argv, "1234567890ukirhc")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
 	{
 		switch(m)
 		{
@@ -35,12 +36,24 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'r':
 				radius = true;
+				if (argv[optind] == NULL || argv[optind + 1] == NULL || argv[optind + 2] == NULL)
+				{
+					std::cerr << "Usage: " << argv[0] << " -r lat lon count" << std::endl;
+					exit(-1);
+				}
+				if (atoi(argv[optind + 2]) > 50)
+				{
+					std::cerr << "Error: Count must be less than 50" << std::endl;
+				}
+				latInput = argv[optind];
+				lonInput = argv[optind + 1];
+				radiusCount = argv[optind + 2];
 				break;
 			case 'h':
 				humidity = true;
 				break;
 			case 'c':
-				if (argv[optind] == NULL || argv[optind] == NULL)
+				if (argv[optind] == NULL || argv[optind + 1] == NULL)
 				{
 					std::cerr << "Error: Must have latitude and longitude when using -c flag" << "\n";
 					exit(-1);
@@ -94,6 +107,16 @@ int main(int argc, char *argv[]) {
 	if (country == true)
 	{
 		std::cout << nWeatherAPI.getCountryWeather(countryInput, units) << std::endl;
+		exit(0);
+	}
+
+	if (radius == true)
+	{
+		std::map radiusTemperature = nWeatherAPI.getRadiusWeather(latInput, lonInput, radiusCount, units);
+		for (auto city = radiusTemperature.begin(); city != radiusTemperature.end(); ++city)
+		{
+			std::cout << city->first << "\t\t" << city->second << "\n";
+		}
 		exit(0);
 	}
 

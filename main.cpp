@@ -2,6 +2,7 @@
 #include "nevinAPI/nweatherAPI.h"
 #include <unistd.h>
 #include <cstdlib>
+#include <iomanip>
 
 /*
  *	Hello random person debugging this program
@@ -25,7 +26,14 @@ int main(int argc, char *argv[]) {
 		{
 			case 'u':
 				help = true;
-				std::cout << "Usage: " << argv[0] << " -u (usage) -k (kelvin) -i (imperial) -r (radius) -h (humidity) -c (coordinates) 'Country name' Country" << "\n";
+				//std::cout << "Usage: " << argv[0] << " -u (usage) -k (kelvin) -i (imperial) -r (radius) -h (humidity) -c (coordinates) 'Country name' Country" << "\n";
+				std::cout << "  Usage" << std::endl
+					<< "----------" << std::endl
+					<< "-i (imperial) -k (kelvin) | Both of these are optional. Defaults to metric" << std::endl
+					<< argv[0] << " Country 'Country Name'" << std::endl
+					<< argv[0] << " -h Country 'County Name'" << std::endl
+					<< argv[0] << " -c lat long" << std::endl
+					<< argv[0] << " -r lat long count" << std::endl;
 				exit(0);
 				break;
 			case 'k':
@@ -115,7 +123,7 @@ int main(int argc, char *argv[]) {
 		std::map radiusTemperature = nWeatherAPI.getRadiusWeather(latInput, lonInput, radiusCount, units);
 		for (auto city = radiusTemperature.begin(); city != radiusTemperature.end(); ++city)
 		{
-			std::cout << city->first << "\t\t" << city->second << "\n";
+			std::cout << std::left << std::setw(50) << city->first << city->second << "\n";
 		}
 		exit(0);
 	}

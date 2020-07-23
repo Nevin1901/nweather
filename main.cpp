@@ -1,5 +1,6 @@
 #include <iostream>
 #include "nevinAPI/nweatherAPI.h"
+#include <string>
 #include <unistd.h>
 #include <cstdlib>
 #include <iomanip>
@@ -14,10 +15,48 @@ int main(int argc, char *argv[]) {
 	bool country = false, help = false, humidity = false, radius = false, latLong = false, countryDescription = false;
 	std::string units = "metric";
 	std::string countryInput;
-	std::string latInput;
-	std::string lonInput;
+	//std::string latInput;
+	//std::string lonInput;
 	std::string radiusCount;
 	using json = nlohmann::json;
+
+	int latInput = -31111111;
+	int lonInput = -31111111;
+
+	//latInput = argv[1];
+	//lonInput = argv[2];
+	
+
+	for (int m = 1; m < argc; m++)
+	{
+		try
+		{
+			std::string::size_type nm;
+			int coordString = std::stoi(argv[m], &nm);
+			if (latInput == -31111111)
+			{
+				latInput = coordString;
+			}
+			else
+			{
+				if (lonInput != -31111111)
+				{
+					break;
+				}
+				lonInput = coordString;
+			}
+		}
+		catch (const std::exception &e)
+		{
+			std::cout << "";
+		}
+	}
+
+	nweatherAPI nWeatherAPI;
+
+	//std::cout << latInput << " " << lonInput << "\n";
+
+	//latLong = true;
 
 	int m;
 	while ((m = getopt(argc, argv, "1234567890ukirhcd")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
@@ -54,8 +93,8 @@ int main(int argc, char *argv[]) {
 				{
 					std::cerr << "Error: Count must be less than 50" << std::endl;
 				}
-				latInput = argv[optind];
-				lonInput = argv[optind + 1];
+			//	latInput = argv[optind];
+			//	lonInput = argv[optind + 1];
 				radiusCount = argv[optind + 2];
 				break;
 			case 'h':
@@ -68,8 +107,8 @@ int main(int argc, char *argv[]) {
 					exit(-1);
 				}
 				latLong = true;
-				latInput = argv[optind];
-				lonInput = argv[optind + 1];
+			//	latInput = argv[optind];
+			//	lonInput = argv[optind + 1];
 				break;
 			case 'd':
 				if (argv[optind] == NULL)
@@ -82,12 +121,12 @@ int main(int argc, char *argv[]) {
 				
 		}
 	}
-
+/*
 	if (argv[optind] != NULL && argv[optind + 1] == NULL)
 	{
 		country == true;
 	}
-
+*/
 	if (latLong == false && radius == false)
 	{
 		if (argv[optind] == NULL && latLong == false)
@@ -116,7 +155,7 @@ int main(int argc, char *argv[]) {
 		exit(-1);
 	}
 
-	nweatherAPI nWeatherAPI;
+	//nweatherAPI nWeatherAPI;
 
 	if (humidity == true)
 	{
@@ -124,11 +163,11 @@ int main(int argc, char *argv[]) {
 		exit(0);
 	}
 
-	if (argv[optind] != NULL && argv[optind + 1] != NULL & countryDescription == false && radius == false)
+	if (latInput != -31111111 && lonInput != -31111111 && countryDescription == false && radius == false)
 	{
-		latInput = argv[optind];
-		lonInput = argv[optind + 1];
-		std::cout << nWeatherAPI.getCountryWeatherByCoords(latInput, lonInput, units) << std::endl;
+		std::cout << nWeatherAPI.getCountryWeatherByCoords(std::to_string(latInput), std::to_string(lonInput), units) << std::endl;
+
+		//std::cout << nWeatherAPI.getCountryWeatherByCoords(latInput, lonInput, units) << std::endl;
 		exit(0);
 	}
 /*
@@ -154,16 +193,16 @@ int main(int argc, char *argv[]) {
 		}
 		else
 		{
-			latInput = argv[optind];
-			lonInput = argv[optind + 1];
-			std::cout << nWeatherAPI.getCountryDescriptionByCoords(latInput, lonInput, units) << std::endl;
+		//	latInput = argv[optind];
+		//	lonInput = argv[optind + 1];
+			std::cout << nWeatherAPI.getCountryDescriptionByCoords(std::to_string(latInput), std::to_string(lonInput), units) << std::endl;
 			exit(0);
 		}
 	}
 
 	if (radius == true)
 	{
-		std::map radiusTemperature = nWeatherAPI.getRadiusWeather(latInput, lonInput, radiusCount, units);
+		std::map radiusTemperature = nWeatherAPI.getRadiusWeather(std::to_string(latInput), std::to_string(lonInput), radiusCount, units);
 		for (auto city = radiusTemperature.begin(); city != radiusTemperature.end(); ++city)
 		{
 			std::cout << std::left << std::setw(50) << city->first << city->second << "\n";

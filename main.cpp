@@ -30,10 +30,11 @@ int main(int argc, char *argv[]) {
 				std::cout << "  Usage" << std::endl
 					<< "----------" << std::endl
 					<< "-i (imperial) -k (kelvin) | Both of these are optional. Defaults to metric" << std::endl
-					<< argv[0] << " Country 'Country Name'" << std::endl
+					<< argv[0] << " lat lon Country 'Country Name'" << std::endl
 					<< argv[0] << " -h Country 'County Name'" << std::endl
-					<< argv[0] << " -c lat long" << std::endl
-					<< argv[0] << " -r lat long count" << std::endl;
+					<< argv[0] << " -c lat lon" << std::endl
+					<< argv[0] << " -r lat lon count" << std::endl
+					<< argv[0] << " -d lat lon Country 'Country Name'" << std::endl;
 				exit(0);
 				break;
 			case 'k':
@@ -82,6 +83,11 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	if (argv[optind] != NULL && argv[optind + 1] == NULL)
+	{
+		country == true;
+	}
+
 	if (latLong == false && radius == false)
 	{
 		if (argv[optind] == NULL && latLong == false)
@@ -118,12 +124,20 @@ int main(int argc, char *argv[]) {
 		exit(0);
 	}
 
+	if (argv[optind] != NULL && argv[optind + 1] != NULL & countryDescription == false && radius == false)
+	{
+		latInput = argv[optind];
+		lonInput = argv[optind + 1];
+		std::cout << nWeatherAPI.getCountryWeatherByCoords(latInput, lonInput, units) << std::endl;
+		exit(0);
+	}
+/*
 	if (latLong == true)
 	{
 		std::cout << nWeatherAPI.getCountryWeatherByCoords(latInput, lonInput, units) << std::endl;
 		exit(0);
 	}
-
+*/
 	if (country == true)
 	{
 		std::cout << nWeatherAPI.getCountryWeather(countryInput, units) << std::endl;

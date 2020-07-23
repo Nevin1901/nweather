@@ -107,6 +107,28 @@ std::map<std::string, int> nweatherAPI::getRadiusWeather(std::string_view lat, s
 	}
 }
 
+std::string nweatherAPI::getCountryDescription(std::string_view location, std::string_view units)
+{
+	if (checkUnits(units))
+	{
+		json result = json::parse(makeLocalWeatherAPICall(location, units));
+		if (result["name"] == NULL)
+		{
+			std::cerr << "Failed to parse description data" << "\n";
+			exit(-1);
+		}
+		else
+		{
+			return static_cast<std::string>(result["weather"][0]["description"]);
+		}
+	}
+	else
+	{
+		std::cerr << "incorrect units" << std::endl;
+		exit(-1);
+	}
+}
+
 std::string nweatherAPI::makeRadiusWeatherAPICall(std::string_view lat, std::string_view lon, std::string_view count, std::string_view units)
 {
 	try

@@ -11,6 +11,8 @@ class nweatherAPI {
 		int getCountryHumidity(std::string_view location, std::string_view units);
 		int getCountryWeatherByCoords(std::string_view lat, std::string_view lon, std::string_view units);
 		std::map<std::string, int> getRadiusWeather(std::string_view lat, std::string_view lon, std::string_view count, std::string_view units);
+		std::string getCountryDescription(std::string_view location, std::string_view units);
+
 	private:
 		std::string makeLocalWeatherAPICall(std::string_view location, std::string_view units);
 		std::string makeLocalWeatherAPICallByCoords(std::string_view apiLat, std::string_view apiLon, std::string_view units);

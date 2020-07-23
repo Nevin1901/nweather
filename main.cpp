@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[]) {
 	
-	bool country = false, help = false, humidity = false, radius = false, latLong = false;
+	bool country = false, help = false, humidity = false, radius = false, latLong = false, countryDescription = false;
 	std::string units = "metric";
 	std::string countryInput;
 	std::string latInput;
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 	using json = nlohmann::json;
 
 	int m;
-	while ((m = getopt(argc, argv, "1234567890ukirhc")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
+	while ((m = getopt(argc, argv, "1234567890ukirhcd")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
 	{
 		switch(m)
 		{
@@ -70,6 +70,16 @@ int main(int argc, char *argv[]) {
 				latInput = argv[optind];
 				lonInput = argv[optind + 1];
 				break;
+			case 'd':
+				if (argv[optind] == NULL)
+				{
+					std::cerr << "Error: Must input country for description" << "\n";
+					exit(-1);
+				}
+				countryDescription = true;
+				countryInput = argv[optind];
+				break;
+				
 		}
 	}
 
@@ -81,9 +91,12 @@ int main(int argc, char *argv[]) {
 			exit(-1000);
 		}
 		countryInput = argv[optind];
-		country = true;
 	}
 	
+	if (latLong == false && radius == false && countryDescription == false && help == false)
+	{
+		country = true;
+	}
 
 
 	if (radius == true && humidity == true)
@@ -115,6 +128,12 @@ int main(int argc, char *argv[]) {
 	if (country == true)
 	{
 		std::cout << nWeatherAPI.getCountryWeather(countryInput, units) << std::endl;
+		exit(0);
+	}
+
+	if (countryDescription == true)
+	{
+		std::cout << nWeatherAPI.getCountryDescription(countryInput, units) << std::endl;
 		exit(0);
 	}
 

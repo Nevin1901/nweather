@@ -77,7 +77,6 @@ int main(int argc, char *argv[]) {
 					exit(-1);
 				}
 				countryDescription = true;
-				countryInput = argv[optind];
 				break;
 				
 		}
@@ -88,7 +87,7 @@ int main(int argc, char *argv[]) {
 		if (argv[optind] == NULL && latLong == false)
 		{
 			std::cerr << "Error: No Country" << "\n";
-			exit(-1000);
+			exit(-1);
 		}
 		countryInput = argv[optind];
 	}
@@ -133,8 +132,19 @@ int main(int argc, char *argv[]) {
 
 	if (countryDescription == true)
 	{
-		std::cout << nWeatherAPI.getCountryDescription(countryInput, units) << std::endl;
-		exit(0);
+		if (argv[optind + 1] == NULL)
+		{
+			countryInput = argv[optind];
+			std::cout << nWeatherAPI.getCountryDescription(countryInput, units) << std::endl;
+			exit(0);
+		}
+		else
+		{
+			latInput = argv[optind];
+			lonInput = argv[optind + 1];
+			std::cout << nWeatherAPI.getCountryDescriptionByCoords(latInput, lonInput, units) << std::endl;
+			exit(0);
+		}
 	}
 
 	if (radius == true)

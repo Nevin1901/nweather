@@ -175,7 +175,6 @@ std::string nweatherAPI::makeLocalWeatherAPICallByCoords(float apiLat, float api
 		const http::Response response = request.send("GET");
 	 	std::string resData = std::string(response.body.begin(), response.body.end());
 	 	return resData;
-		return "hi";
 	}
 	catch (const std::exception& e)
 	{

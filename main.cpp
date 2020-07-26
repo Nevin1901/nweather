@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 
 	nweatherAPI nWeatherAPI;
 
-	std::cout << latInput << " " << lonInput << "\n";
+	//std::cout << latInput << " " << lonInput << "\n";
 
 	//latLong = true;
 
@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		countryInput = argv[optind];
-		std::cout << countryInput << "\n";
+		//std::cout << countryInput << "\n";
 	}
 	
 	if (latLong == false && radius == false && countryDescription == false && help == false)

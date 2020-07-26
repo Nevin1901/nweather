@@ -12,7 +12,7 @@ std::string makeLocalWeatherAPICall(std::string location, std::string units);
 int getCountryHumidity(std::string location, std::string units);
 std::string makeLocalWeatherAPICallByCoords(std::string lat, std::string lon, std::string units);
 */
-int nweatherAPI::getCountryWeather(std::string_view location, std::string_view units)
+float nweatherAPI::getCountryWeather(std::string_view location, std::string_view units)
 {
 	if (checkUnits(units))
 	{
@@ -25,7 +25,7 @@ int nweatherAPI::getCountryWeather(std::string_view location, std::string_view u
 
 		else
 		{
-			return static_cast<int>(result["main"]["temp"]);
+			return static_cast<float>(result["main"]["temp"]);
 		}
 	}
 	else
@@ -57,7 +57,7 @@ int nweatherAPI::getCountryHumidity(std::string_view location, std::string_view 
 	}
 }
 
-int nweatherAPI::getCountryWeatherByCoords(std::string_view lat, std::string_view lon, std::string_view units)
+float nweatherAPI::getCountryWeatherByCoords(float& lat, float& lon, std::string_view units)
 {
 	if (checkUnits(units))
 	{
@@ -69,7 +69,7 @@ int nweatherAPI::getCountryWeatherByCoords(std::string_view lat, std::string_vie
 		}
 		else
 		{
-			return static_cast<int>(result["main"]["temp"]);
+			return static_cast<float>(result["main"]["temp"]);
 		}
 	}
 	else
@@ -79,7 +79,7 @@ int nweatherAPI::getCountryWeatherByCoords(std::string_view lat, std::string_vie
 	}
 }
 
-std::map<std::string, int> nweatherAPI::getRadiusWeather(std::string_view lat, std::string_view lon, std::string_view count, std::string_view units)
+std::map<std::string, float> nweatherAPI::getRadiusWeather(float& lat, float& lon, int count, std::string_view units)
 {
 	if (checkUnits(units))
 	{
@@ -91,10 +91,10 @@ std::map<std::string, int> nweatherAPI::getRadiusWeather(std::string_view lat, s
 		}
 		else
 		{
-			std::map<std::string, int> countries;
+			std::map<std::string, float> countries;
 			for (auto& el : result["list"].items())
 			{
-				countries.insert({static_cast<std::string>(el.value()["name"]), static_cast<int>(el.value()["main"]["temp"])});
+				countries.insert({static_cast<std::string>(el.value()["name"]), static_cast<float>(el.value()["main"]["temp"])});
 			//	std::cout << el.value()["name"] << " : " << el.value()["main"]["temp"] << std::endl;
 			}
 			return countries;
@@ -129,7 +129,7 @@ std::string nweatherAPI::getCountryDescription(std::string_view location, std::s
 	}
 }
 
-std::string nweatherAPI::getCountryDescriptionByCoords(std::string_view lat, std::string_view lon, std::string_view units)
+std::string nweatherAPI::getCountryDescriptionByCoords(float lat, float lon, std::string_view units)
 {
 	if (checkUnits(units))
 	{
@@ -151,11 +151,11 @@ std::string nweatherAPI::getCountryDescriptionByCoords(std::string_view lat, std
 	}
 }
 
-std::string nweatherAPI::makeRadiusWeatherAPICall(std::string_view lat, std::string_view lon, std::string_view count, std::string_view units)
+std::string nweatherAPI::makeRadiusWeatherAPICall(float& lat, float& lon, int count, std::string_view units)
 {
 	try
 	{
-		http::Request request(static_cast<std::string>("http://api.openweathermap.org/data/2.5/find?lat=" + static_cast<std::string>(lat) + "&lon=" + static_cast<std::string>(lon) +"&cnt=" + static_cast<std::string>(count) + "&units=" + static_cast<std::string>(units) + "&appid=745e71977952cc564f59aada718bb85c"));
+		http::Request request(static_cast<std::string>("http://api.openweathermap.org/data/2.5/find?lat=" + std::to_string(lat) + "&lon=" + std::to_string(lon) +"&cnt=" + std::to_string(count) + "&units=" + static_cast<std::string>(units) + "&appid=745e71977952cc564f59aada718bb85c"));
 		const http::Response response = request.send("GET");
 		std::string responseData = std::string(response.body.begin(), response.body.end());
 		return responseData;
@@ -167,11 +167,11 @@ std::string nweatherAPI::makeRadiusWeatherAPICall(std::string_view lat, std::str
 	}
 }
 
-std::string nweatherAPI::makeLocalWeatherAPICallByCoords(std::string_view apiLat, std::string_view apiLon, std::string_view units)
+std::string nweatherAPI::makeLocalWeatherAPICallByCoords(float apiLat, float apiLon, std::string_view units)
 {
 	try
 	{
-		http::Request request(static_cast<std::string>("http://api.openweathermap.org/data/2.5/weather?lat=") + static_cast<std::string>(apiLat) + static_cast<std::string>("&lon=") + static_cast<std::string>(apiLon) + static_cast<std::string>("&appid=745e71977952cc564f59aada718bb85c&units=") + static_cast<std::string>(units));
+		http::Request request(static_cast<std::string>("http://api.openweathermap.org/data/2.5/weather?lat=") + std::to_string(apiLat) + static_cast<std::string>("&lon=") + std::to_string(apiLon) + static_cast<std::string>("&appid=745e71977952cc564f59aada718bb85c&units=") + static_cast<std::string>(units));
 		const http::Response response = request.send("GET");
 	 	std::string resData = std::string(response.body.begin(), response.body.end());
 	 	return resData;

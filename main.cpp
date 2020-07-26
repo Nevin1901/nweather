@@ -4,11 +4,20 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <iomanip>
+#include <sstream>
+#include <iomanip>
+#include <stdlib.h>
 
 /*
  *	Hello random person debugging this program
  *	Please don't steal my api key, it is free to create a new one
  */
+
+bool is_valid(std::string inputArgument)
+{
+	return inputArgument.find_first_not_of("0123456789-.") == std::string::npos;
+}
+
 
 int main(int argc, char *argv[]) {
 	
@@ -17,11 +26,12 @@ int main(int argc, char *argv[]) {
 	std::string countryInput;
 	//std::string latInput;
 	//std::string lonInput;
-	std::string radiusCount;
+	//std::string radiusCount;
+	int radiusCount;
 	using json = nlohmann::json;
 
-	int latInput = -31111111;
-	int lonInput = -31111111;
+	float latInput = -31111111.0f;
+	float lonInput = -31111111.0f;
 
 	//latInput = argv[1];
 	//lonInput = argv[2];
@@ -29,37 +39,34 @@ int main(int argc, char *argv[]) {
 
 	for (int m = 1; m < argc; m++)
 	{
-		try
+		if (is_valid(argv[m]))
 		{
-			std::string::size_type nm;
-			int coordString = std::stoi(argv[m], &nm);
-			if (latInput == -31111111)
+			if (latInput == -31111111.0f)
 			{
-				latInput = coordString;
+				latInput = atof(argv[m]);
 			}
 			else
 			{
-				if (lonInput != -31111111)
+				if (lonInput != -31111111.0f)
 				{
 					break;
 				}
-				lonInput = coordString;
+				lonInput = atof(argv[m]);
 			}
-		}
-		catch (const std::exception &e)
-		{
-			std::cout << "";
 		}
 	}
 
+	if (latInput != -31111111.0f && lonInput != -31111111.0f)
+		latLong = true;
+
 	nweatherAPI nWeatherAPI;
 
-	//std::cout << latInput << " " << lonInput << "\n";
+	std::cout << latInput << " " << lonInput << "\n";
 
 	//latLong = true;
 
 	int m;
-	while ((m = getopt(argc, argv, "1234567890ukirhcd")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
+	while ((m = getopt(argc, argv, "1234567890ukirhcd.")) != -1) // country name, help (usage), kelvin, imperial, radius, humidity, coordinates
 	{
 		switch(m)
 		{
@@ -89,13 +96,13 @@ int main(int argc, char *argv[]) {
 					std::cerr << "Usage: " << argv[0] << " -r lat lon count" << std::endl;
 					exit(-1);
 				}
-				if (atoi(argv[optind + 2]) > 50)
+				if (std::stoi(argv[optind + 2]) > 50)
 				{
 					std::cerr << "Error: Count must be less than 50" << std::endl;
 				}
 			//	latInput = argv[optind];
 			//	lonInput = argv[optind + 1];
-				radiusCount = argv[optind + 2];
+				radiusCount = std::stoi(argv[optind + 2]);
 				break;
 			case 'h':
 				humidity = true;
@@ -131,10 +138,15 @@ int main(int argc, char *argv[]) {
 	{
 		if (argv[optind] == NULL && latLong == false)
 		{
-			std::cerr << "Error: No Country" << "\n";
-			exit(-1);
+			if (latInput == -31111111.0f && lonInput == -31111111.0f)
+			{
+				std::cerr << "Error: No Country" << "\n";
+				exit(-1);
+	
+			}
 		}
 		countryInput = argv[optind];
+		std::cout << countryInput << "\n";
 	}
 	
 	if (latLong == false && radius == false && countryDescription == false && help == false)
@@ -165,7 +177,7 @@ int main(int argc, char *argv[]) {
 
 	if (latInput != -31111111 && lonInput != -31111111 && countryDescription == false && radius == false)
 	{
-		std::cout << nWeatherAPI.getCountryWeatherByCoords(std::to_string(latInput), std::to_string(lonInput), units) << std::endl;
+		std::cout << nWeatherAPI.getCountryWeatherByCoords(latInput, lonInput, units) << std::endl;
 
 		//std::cout << nWeatherAPI.getCountryWeatherByCoords(latInput, lonInput, units) << std::endl;
 		exit(0);
@@ -195,14 +207,14 @@ int main(int argc, char *argv[]) {
 		{
 		//	latInput = argv[optind];
 		//	lonInput = argv[optind + 1];
-			std::cout << nWeatherAPI.getCountryDescriptionByCoords(std::to_string(latInput), std::to_string(lonInput), units) << std::endl;
+			std::cout << nWeatherAPI.getCountryDescriptionByCoords(latInput, lonInput, units) << std::endl;
 			exit(0);
 		}
 	}
 
 	if (radius == true)
 	{
-		std::map radiusTemperature = nWeatherAPI.getRadiusWeather(std::to_string(latInput), std::to_string(lonInput), radiusCount, units);
+		std::map radiusTemperature = nWeatherAPI.getRadiusWeather(latInput, lonInput, radiusCount, units);
 		for (auto city = radiusTemperature.begin(); city != radiusTemperature.end(); ++city)
 		{
 			std::cout << std::left << std::setw(50) << city->first << city->second << "\n";

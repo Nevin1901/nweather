@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
 					<< "----------" << std::endl
 					<< "-i (imperial) -k (kelvin) | Both of these are optional. Defaults to metric" << std::endl
 					<< argv[0] << " lat lon Country 'Country Name'" << std::endl
-					<< argv[0] << " -h Country 'County Name'" << std::endl
+					<< argv[0] << " -h lat lon Country 'County Name'" << std::endl
 					<< argv[0] << " -c lat lon" << std::endl
 					<< argv[0] << " -r lat lon count" << std::endl
 					<< argv[0] << " -d lat lon Country 'Country Name'" << std::endl;

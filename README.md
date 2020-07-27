@@ -21,3 +21,6 @@ nweather -r lat long count
 `make`
 Then move to /bin/
 
+## Todo
+* Add a flag which will output an emoji based on description
+* Add a flag which will show stats about the weather in one line, which could be used in your statusbar

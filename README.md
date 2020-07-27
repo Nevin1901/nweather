@@ -15,7 +15,6 @@ nweather Country 'Country Name'
 nweather -h Country 'County Name'
 nweather -c lat long
 nweather -r lat long count
-
 ```
 
 ## Building

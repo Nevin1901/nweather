@@ -57,6 +57,28 @@ int nweatherAPI::getCountryHumidity(std::string_view location, std::string_view 
 	}
 }
 
+int nweatherAPI::getCountryHumidityByCoords(float& lat, float& lon, std::string_view units)
+{
+	if (checkUnits(units))
+	{
+		json result = json::parse(makeLocalWeatherAPICallByCoords(lat, lon, units));
+		if (result["main"]["humidity"] == nlohmann::detail::value_t::null)
+		{
+			std::cerr << "Failed to parse humidity data" << "\n";
+			exit(-1);
+		}
+		else
+		{
+			return static_cast<int>(result["main"]["humidity"]);
+		}
+	}
+	else
+	{
+		std::cout << "incorrect units" << std::endl;
+		exit(-1);
+	}
+}
+
 float nweatherAPI::getCountryWeatherByCoords(float& lat, float& lon, std::string_view units)
 {
 	if (checkUnits(units))

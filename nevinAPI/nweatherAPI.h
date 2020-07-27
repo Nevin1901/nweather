@@ -9,7 +9,7 @@ class nweatherAPI {
 	public:
 		float getCountryWeather(std::string_view location, std::string_view units);
 		int getCountryHumidity(std::string_view location, std::string_view units);
-		int getCountryHumidityByCoords(float& lat, float& lon, std::string_view units); // todo
+		int getCountryHumidityByCoords(float& lat, float& lon, std::string_view units); 	
 		float getCountryWeatherByCoords(float& lat, float& lon, std::string_view units);
 		std::map<std::string, float> getRadiusWeather(float& lat, float&, int count, std::string_view units);
 		std::string getCountryDescription(std::string_view location, std::string_view units);

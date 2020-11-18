@@ -1,6 +1,6 @@
 
 nweather: main.o nweatherAPI.o
-	g++ -std=c++17 main.o nweatherAPI.o -o nweather
+	mkdir -p ./bin && g++ -std=c++17 main.o nweatherAPI.o -o ./bin/nweather && rm *.o
 
 main.o: main.cpp
 	g++ -std=c++17 -c main.cpp

@@ -18,6 +18,7 @@ class nweatherAPI {
 		std::string makeLocalWeatherAPICall(std::string_view location, std::string_view units);
 		std::string makeLocalWeatherAPICallByCoords(float apiLat, float apiLon, std::string_view units);
 		std::string makeRadiusWeatherAPICall(float& lat, float& lon, int count, std::string_view units);
+		std::string makeLocalWeatherAPICallByCityId(int cityId, std::string_view units);
 		bool checkUnits(std::string_view unit);
 };
 

@@ -228,3 +228,18 @@ bool nweatherAPI::checkUnits(std::string_view unit)
 	else return false;
 }
 
+std::string nweatherAPI::makeLocalWeatherAPICallByCityId(int cityId, std::string_view units)
+{
+	try
+	{
+		http::Request request(static_cast<std::string>("api.openweathermap.org/data/2.5/weather?id=") + std::to_string(cityId) + "&appid=745e71977952cc564f59aada718bb85c&units=" + static_cast<std::string>(units));
+		const http::Response response = request.send("GET");
+		std::string resData = std::string(response.body.begin(), response.body.end());
+		return resData;
+	}
+	catch (const std::exception e)
+	{
+		std::cerr << "Api call request failed, error " << e.what() << "\n";
+		exit(-1);
+	}
+}

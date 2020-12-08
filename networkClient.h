@@ -1,11 +1,11 @@
 namespace networkClient {
 	class URI {
 		public:
-			URI(std::string _data, int _statusCode) {
+			URI(std::string _data, int _status) {
 				data = _data;
-				statusCode = _statusCode;
+				status = _status;
 			}
-			int statusCode;
+			int status;
 			std::string data;
 
 		
@@ -13,7 +13,8 @@ namespace networkClient {
 	class networkTools {
 		public:
 			std::string getLocation();
-			networkClient::URI makeHttpRequest(networkClient::URI uri);
+		private:
+			networkClient::URI makeHttpRequest(std::string url);
 	};
 }
 

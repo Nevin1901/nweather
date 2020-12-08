@@ -53,9 +53,11 @@ int main(int argc, char *argv[]) {
 
 	networkClient::networkTools network;
 
-	networkClient::URI uri("https://nevin.cc", 100); 
+	std::string ip = network.getLocation();
 
-	network.makeHttpRequest(uri);
+	std::cout << ip << "\n";
+
+	return 0;
 
 	for (int m = 1; m < argc; m++)
 	{

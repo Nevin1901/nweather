@@ -7,6 +7,9 @@
 #include <sstream>
 #include <iomanip>
 #include <stdlib.h>
+#include "cxxopts/cxxopts.hpp"
+#include <optional>
+#include "networkClient.h"
 
 /*
  *	Hello random person debugging this program
@@ -27,7 +30,7 @@ int main(int argc, char *argv[]) {
 	//std::string latInput;
 	//std::string lonInput;
 	//std::string radiusCount;
-	int radiusCount;
+	unsigned int radiusCount;
 	using json = nlohmann::json;
 
 	float latInput = -31111111.0f;
@@ -36,18 +39,35 @@ int main(int argc, char *argv[]) {
 	//latInput = argv[1];
 	//lonInput = argv[2];
 	
+	cxxopts::Options options("nweather", "error: No country input");
+
+	options.add_options()
+		("i,imperial", "enable imperial units")
+		("k,kelvin", "enable kelvin units")
+		("h,humidity", "enable humidity setting")
+		("c,coordinates", "allow coordinates to be used", cxxopts::value<std::vector<int>>())
+		("r,radius", "get the radius around an area", cxxopts::value<std::vector<int>>())
+		("d,description", "get the description of the weather");
+
+	auto result = options.parse(argc, argv);
+
+	networkClient::networkTools network;
+
+	networkClient::URI uri("https://nevin.cc", 100); 
+
+	network.makeHttpRequest(uri);
 
 	for (int m = 1; m < argc; m++)
 	{
 		if (is_valid(argv[m]))
 		{
-			if (latInput == -31111111.0f)
+			if (!latInput)
 			{
 				latInput = atof(argv[m]);
 			}
 			else
 			{
-				if (lonInput != -31111111.0f)
+				if (lonInput)
 				{
 					break;
 				}
@@ -56,7 +76,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	if (latInput != -31111111.0f && lonInput != -31111111.0f)
+	if (latInput && lonInput)
 		latLong = true;
 
 	nweatherAPI nWeatherAPI;

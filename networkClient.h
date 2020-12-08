@@ -14,6 +14,7 @@ namespace networkClient {
 		public:
 			std::string getLocation();
 		private:
+			std::string getIP();
 			networkClient::URI makeHttpRequest(std::string url);
 	};
 }

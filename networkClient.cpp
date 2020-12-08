@@ -7,7 +7,7 @@ namespace networkClient {
 
 	using json = nlohmann::json;
 
-	std::string networkTools::getLocation() {
+	std::string networkTools::getIP() {
 		networkClient::URI uri = networkTools::makeHttpRequest("http://api.ipify.org");
 		if (uri.status == 200) {
 			return uri.data;
@@ -30,6 +30,10 @@ namespace networkClient {
 			std::cerr << "Api call request failed, error " << e.what() << "\n";
 			exit(-1);
 		}
+	}
+
+	std::string networkTools::getLocation() {
+		return "Hello";
 	}
 }
 

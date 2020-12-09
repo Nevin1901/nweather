@@ -8,7 +8,7 @@ namespace networkClient {
 	using json = nlohmann::json;
 
 	std::string networkTools::getIP() {
-		networkClient::URI uri = networkTools::makeHttpRequest("http://api.ipify.org");
+		URI uri = networkTools::makeHttpRequest("http://api.ipify.org");
 		if (uri.status == 200) {
 			return uri.data;
 		}
@@ -18,13 +18,12 @@ namespace networkClient {
 		}
 	}
 
-	networkClient::URI networkTools::makeHttpRequest(std::string url) {
+	URI networkTools::makeHttpRequest(std::string url) {
 		try {
-			std::cout << url << std::endl;
-			http::Request request(static_cast<std::string>(url));
+			http::Request request(url);
 			const http::Response response = request.send("GET");
 			std::string resData = std::string(response.body.begin(), response.body.end());
-			networkClient::URI uri(std::string(response.body.begin(), response.body.end()), response.status);
+			URI uri(std::string(response.body.begin(), response.body.end()), response.status);
 			return uri;
 		} catch (const std::exception& e) {
 			std::cerr << "Api call request failed, error " << e.what() << "\n";
@@ -33,7 +32,16 @@ namespace networkClient {
 	}
 
 	std::string networkTools::getLocation() {
-		return "Hello";
+		std::string ipAddr = networkTools::getIP();
+		URI _locationData = networkTools::makeHttpRequest("http://ip-api.com/json/" + ipAddr);
+		if (_locationData.status == 200) {
+			json locationData = json::parse(_locationData.data);
+			return locationData["city"];
+		}
+		else {
+			std::cerr << "Error: Unable to get location. Status code " << _locationData.status << std::endl;
+			exit(-1);
+		}
 	}
 }
 

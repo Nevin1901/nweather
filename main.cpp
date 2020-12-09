@@ -10,6 +10,7 @@
 #include "cxxopts/cxxopts.hpp"
 #include <optional>
 #include "networkClient.h"
+#include "weather.h"
 
 /*
  *	Hello random person debugging this program
@@ -51,11 +52,11 @@ int main(int argc, char *argv[]) {
 
 	auto result = options.parse(argc, argv);
 
-	networkClient::networkTools network;
+	Weather weather;
 
-	std::string ip = network.getLocation();
+	float ip = weather.getLocalWeather();
 
-	std::cout << ip << "\n";
+	std::cout << ip << "C" << "\n";
 
 	return 0;
 

@@ -1,21 +1,12 @@
-namespace networkClient {
-	class URI {
-		public:
-			URI(std::string _data, int _status) {
-				data = _data;
-				status = _status;
-			}
-			int status;
-			std::string data;
+#include <iostream>
+#include "URI.h"
 
-		
-	};
+namespace networkClient {
 	class networkTools {
 		public:
 			std::string getLocation();
-		private:
 			std::string getIP();
-			networkClient::URI makeHttpRequest(std::string url);
+			URI makeHttpRequest(std::string url);
 	};
 }
 

@@ -24,6 +24,8 @@ bool is_valid(std::string inputArgument)
 
 
 int main(int argc, char *argv[]) {
+
+	/*
 	
 	bool country = false, help = false, humidity = false, radius = false, latLong = false, countryDescription = false;
 	std::string units = "metric";
@@ -39,20 +41,28 @@ int main(int argc, char *argv[]) {
 
 	//latInput = argv[1];
 	//lonInput = argv[2];
+	*/
 	
 	cxxopts::Options options("nweather", "error: No country input");
 
 	setenv("nweather_UNITS", "metric", 1);
 
+
 	options.add_options()
 		("i,imperial", "enable imperial units")
 		("k,kelvin", "enable kelvin units")
 		("h,humidity", "enable humidity setting")
-		("c,coordinates", "allow coordinates to be used", cxxopts::value<std::vector<int>>())
-		("r,radius", "get the radius around an area", cxxopts::value<std::vector<int>>())
+		("c,coordinates", "allow coordinates to be used", cxxopts::value<std::vector<int>>()->default_value("65535,65535"))
+		("r,radius", "get the radius around an area", cxxopts::value<std::vector<int>>()->default_value("65535,65535,65535"))
 		("d,description", "get the description of the weather");
 
 	auto result = options.parse(argc, argv);
+
+	std::vector<int> coordinates = result["c"].as<std::vector<int>>();
+
+	std::vector<int> radius = result["r"].as<std::vector<int>>();
+
+	std::cout << coordinates[0] << coordinates[1] << std::endl;
 
 	if (result["i"].as<bool>()) setenv("nweather_UNITS", "imperial", 1);
 
@@ -226,7 +236,6 @@ int main(int argc, char *argv[]) {
 		std::cout << nWeatherAPI.getCountryWeatherByCoords(latInput, lonInput, units) << std::endl;
 		exit(0);
 	}
-*/
 	if (country == true)
 	{
 		std::cout << nWeatherAPI.getCountryWeather(countryInput, units) << std::endl;
@@ -267,5 +276,5 @@ int main(int argc, char *argv[]) {
 		exit(0);
 	}
 	return 0;
+} */
 }
-

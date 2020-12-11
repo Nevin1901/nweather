@@ -1,6 +1,7 @@
 CC			:= g++
 CCFLAGS		:= -std=c++17
 LDFLAGS		:= -c
+RLFLAGS 	:= -Os
 
 TARGETPATH	:= ./bin
 TARGETNAME	:= nweather

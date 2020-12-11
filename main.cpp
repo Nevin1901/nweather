@@ -42,6 +42,8 @@ int main(int argc, char *argv[]) {
 	
 	cxxopts::Options options("nweather", "error: No country input");
 
+	setenv("nweather_UNITS", "metric", 1);
+
 	options.add_options()
 		("i,imperial", "enable imperial units")
 		("k,kelvin", "enable kelvin units")
@@ -52,11 +54,15 @@ int main(int argc, char *argv[]) {
 
 	auto result = options.parse(argc, argv);
 
+	if (result["i"].as<bool>()) setenv("nweather_UNITS", "imperial", 1);
+
+	if (result["k"].as<bool>()) setenv("nweather_UNITS", "kelvin", 1);
+
 	Weather weather;
 
 	float ip = weather.getLocalWeather();
 
-	std::cout << ip << "C" << "\n";
+	std::cout << ip << "\n";
 
 	return 0;
 

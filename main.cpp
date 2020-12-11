@@ -60,11 +60,18 @@ int main(int argc, char *argv[]) {
 
 	Weather weather;
 
+	if (result["h"].as<bool>()) {
+		std::cout << weather.getLocalWeatherHumidity() << std::endl;
+		return 0;
+	}
+
 	float ip = weather.getLocalWeather();
 
 	std::cout << ip << "\n";
 
 	return 0;
+
+	/*
 
 	for (int m = 1; m < argc; m++)
 	{
@@ -157,12 +164,10 @@ int main(int argc, char *argv[]) {
 				
 		}
 	}
-/*
 	if (argv[optind] != NULL && argv[optind + 1] == NULL)
 	{
 		country == true;
 	}
-*/
 	if (latLong == false && radius == false)
 	{
 		if (argv[optind] == NULL && latLong == false)
@@ -183,13 +188,11 @@ int main(int argc, char *argv[]) {
 		country = true;
 	}
 
-	/*
 	if (radius == true && humidity == true)
 	{
 		std::cerr << "Error: Can't use humidity with radius weather" << "\n";
 		exit(-1);
 	}
-	*/
 
 	if (country == true && latLong == true)
 	{
@@ -218,7 +221,6 @@ int main(int argc, char *argv[]) {
 		//std::cout << nWeatherAPI.getCountryWeatherByCoords(latInput, lonInput, units) << std::endl;
 		exit(0);
 	}
-/*
 	if (latLong == true)
 	{
 		std::cout << nWeatherAPI.getCountryWeatherByCoords(latInput, lonInput, units) << std::endl;

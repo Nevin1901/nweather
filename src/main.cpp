@@ -17,11 +17,13 @@
  *	Please don't steal my api key, it is free to create a new one
  */
 
+
+/*
 bool is_valid(std::string inputArgument)
 {
 	return inputArgument.find_first_not_of("0123456789-.") == std::string::npos;
 }
-
+*/
 
 int main(int argc, char *argv[]) {
 
@@ -61,8 +63,6 @@ int main(int argc, char *argv[]) {
 	std::vector<int> coordinates = result["c"].as<std::vector<int>>();
 
 	std::vector<int> radius = result["r"].as<std::vector<int>>();
-
-	std::cout << coordinates[0] << coordinates[1] << std::endl;
 
 	if (result["i"].as<bool>()) setenv("nweather_UNITS", "imperial", 1);
 

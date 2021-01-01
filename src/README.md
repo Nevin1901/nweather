@@ -2,7 +2,7 @@
 
 A simple command line tool which allows you to get the weather from any country, and more
 
-![1](images/1.png)
+![1](../images/1.png)
 
 ## Info
 nweather is primarily a command line program made for getting the weather and other information about it. It is mainly meant for unix, but it should compile on windows just fine.

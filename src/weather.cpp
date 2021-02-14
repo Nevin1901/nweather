@@ -9,6 +9,8 @@ networkClient::networkTools network;
 
 using json = nlohmann::json;
 
+
+
 float Weather::getLocalWeather() {
  	json localWeather = getLocalWeatherData();
 	return localWeather["main"]["temp"];
@@ -21,7 +23,7 @@ float Weather::getLocalWeatherHumidity() {
 
 json Weather::getLocalWeatherData() {
 	std::string location = network.getLocation();
-	URI localWeatherData = network.makeHttpRequest("api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=745e71977952cc564f59aada718bb85c&units=" + getenv("nweather_UNITS"));
+	URI localWeatherData = network.makeHttpRequest("api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=745e71977952cc564f59aada718bb85c&units=" + nweatherUnits);
 	if (localWeatherData.status == 200) {
 		json localWeatherDataJson = json::parse(localWeatherData.data);
 		return localWeatherDataJson;

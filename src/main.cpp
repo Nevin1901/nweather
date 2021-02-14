@@ -44,11 +44,10 @@ int main(int argc, char *argv[]) {
 	//latInput = argv[1];
 	//lonInput = argv[2];
 	*/
-	
+
+    std::map<std::string, std::string> shortUnits = {{"metric", "C°"}, {"imperial", "F°"}, {"kelvin", "K°"}};
+
 	cxxopts::Options options("nweather", "error: No country input");
-
-	setenv("nweather_UNITS", "metric", 1);
-
 
 	options.add_options()
 		("i,imperial", "enable imperial units")
@@ -58,17 +57,19 @@ int main(int argc, char *argv[]) {
 		("r,radius", "get the radius around an area", cxxopts::value<std::vector<int>>()->default_value("65535,65535,65535"))
 		("d,description", "get the description of the weather");
 
+	std::string nweatherUnits = "metric";
+
 	auto result = options.parse(argc, argv);
 
 	std::vector<int> coordinates = result["c"].as<std::vector<int>>();
 
 	std::vector<int> radius = result["r"].as<std::vector<int>>();
 
-	if (result["i"].as<bool>()) setenv("nweather_UNITS", "imperial", 1);
+	if (result["i"].as<bool>()) nweatherUnits = "imperial";
 
-	if (result["k"].as<bool>()) setenv("nweather_UNITS", "kelvin", 1);
+	if (result["k"].as<bool>()) nweatherUnits = "kelvin";
 
-	Weather weather;
+	Weather weather(nweatherUnits);
 
 	if (result["h"].as<bool>()) {
 		std::cout << weather.getLocalWeatherHumidity() << std::endl;
@@ -77,7 +78,9 @@ int main(int argc, char *argv[]) {
 
 	float ip = weather.getLocalWeather();
 
-	std::cout << ip << "\n";
+	std::cout << ip;
+
+    std::cout << shortUnits[nweatherUnits] << std::endl; // todo: convert nweatherUnits to an enum
 
 	return 0;
 

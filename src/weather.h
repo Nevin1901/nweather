@@ -8,7 +8,11 @@ class Weather {
 	public:
 		float getLocalWeather();
 		float getLocalWeatherHumidity();
+		Weather(std::string units) {
+			nweatherUnits = units;
+		}
 	private:
 		json getLocalWeatherData();
+		std::string nweatherUnits;
 
 };

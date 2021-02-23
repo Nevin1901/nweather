@@ -1,5 +1,5 @@
 #include <iostream>
-#include "nevinAPI/nweatherAPI.h"
+// #include "nevinAPI/nweatherAPI.h"
 #include <string>
 #include <unistd.h>
 #include <cstdlib>
@@ -47,43 +47,63 @@ int main(int argc, char *argv[]) {
 
     std::map<std::string, std::string> shortUnits = {{"metric", "C°"}, {"imperial", "F°"}, {"kelvin", "K°"}};
 
-	cxxopts::Options options("nweather", "error: No country input");
+	cxxopts::Options options(argv[0]);
+
+	std::vector<int> coordinates; 
+
+	int radius = 1;
 
 	options.add_options()
 		("i,imperial", "enable imperial units")
 		("k,kelvin", "enable kelvin units")
 		("h,humidity", "enable humidity setting")
-		("c,coordinates", "allow coordinates to be used", cxxopts::value<std::vector<int>>()->default_value("65535,65535"))
-		("r,radius", "get the radius around an area", cxxopts::value<std::vector<int>>()->default_value("65535,65535,65535"))
-		("d,description", "get the description of the weather");
+		("c,coordinates", "allow coordinates to be used", cxxopts::value(coordinates))
+		("r,radius", "get the radius around an area", cxxopts::value<int>(radius))
+		("d,description", "get the description of the weather")
+		("u,usage", "usage information");
 
 	std::string nweatherUnits = "metric";
 
 	auto result = options.parse(argc, argv);
 
-	std::vector<int> coordinates = result["c"].as<std::vector<int>>();
+	if (result.count("i")) nweatherUnits = "imperial";
 
-	std::vector<int> radius = result["r"].as<std::vector<int>>();
+	if (result.count("k")) nweatherUnits = "kelvin";
 
-	if (result["i"].as<bool>()) nweatherUnits = "imperial";
-
-	if (result["k"].as<bool>()) nweatherUnits = "kelvin";
+	if (result.count("u")) {
+		std::cout << options.help({""}) << std::endl;
+		return 0;
+	}
 
 	Weather weather(nweatherUnits);
 
-	if (result["h"].as<bool>()) {
+	if (result.count("c")) {
+		if (coordinates.size() <= 1 || coordinates.size() > 2) {
+			std::cout << "Error: Invalid amount of coordinates" << std::endl;
+			return 0;
+		}
+		std::map<std::string, float> weatherCoordinates = weather.getWeatherByCoordinates(coordinates[0], coordinates[1], radius);
+		for (auto city = weatherCoordinates.begin(); city != weatherCoordinates.end(); ++city) {
+			std::cout << std::left << std::setw(50) << city->first << city->second << std::endl;
+		}
+		return 0;
+	}
+
+	if (result.count("h")) {
 		std::cout << weather.getLocalWeatherHumidity() << std::endl;
 		return 0;
 	}
 
-	float ip = weather.getLocalWeather();
+	else {
 
-	std::cout << ip;
+		std::cout << "0";
 
-    std::cout << shortUnits[nweatherUnits] << std::endl; // todo: convert nweatherUnits to an enum
+		std::cout << shortUnits[nweatherUnits] << std::endl; // todo: convert nweatherUnits to an enum
 
-	return 0;
+		return 0;
+	}
 
+	// float currentWeather = weather.getLocalWeather();
 	/*
 
 	for (int m = 1; m < argc; m++)

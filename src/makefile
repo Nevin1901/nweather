@@ -1,6 +1,6 @@
 CC			:= g++
 CCFLAGS		:= -std=c++17
-LDFLAGS		:= -c -Os
+LDFLAGS		:= -c -ggdb -g3
 RLFLAGS 	:= -Os
 
 BUILDDIR	:= ./src

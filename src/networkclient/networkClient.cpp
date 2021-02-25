@@ -1,7 +1,7 @@
 #include <iostream>
 #include "networkClient.h"
-#include "nlohmann/json.hpp"
-#include "HTTPRequest.hpp"
+#include "../nlohmann/json.hpp"
+#include "../HTTPRequest/HTTPRequest.hpp"
 
 namespace networkClient {
 

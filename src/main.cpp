@@ -7,10 +7,10 @@
 #include <sstream>
 #include <iomanip>
 #include <stdlib.h>
-#include "cxxopts/cxxopts.hpp"
+#include "./cxxopts/cxxopts.hpp"
 #include <optional>
-#include "networkClient.h"
-#include "weather.h"
+#include "./networkclient/networkClient.h"
+#include "weather/weather.h"
 
 /*
  *	Hello random person debugging this program
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 
 	else {
 
-		std::cout << "0";
+		std::cout << weather.getLocalWeather();
 
 		std::cout << shortUnits[nweatherUnits] << std::endl; // todo: convert nweatherUnits to an enum
 

@@ -1,15 +1,13 @@
 #include <iostream>
 #include <stdlib.h>
-#include "networkClient.h"
+#include "../networkclient/networkClient.h"
 #include "weather.h"
-#include "URI.h"
-#include "nlohmann/json.hpp"
+#include "../URI/URI.h"
+#include "../nlohmann/json.hpp"
 
 networkClient::networkTools network;
 
 using json = nlohmann::json;
-
-
 
 float Weather::getLocalWeather() {
  	json localWeather = getLocalWeatherData();

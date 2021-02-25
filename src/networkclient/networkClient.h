@@ -1,5 +1,5 @@
 #include <iostream>
-#include "URI.h"
+#include "../URI/URI.h"
 
 namespace networkClient {
 	class networkTools {

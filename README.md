@@ -10,17 +10,21 @@ I mainly created this as a way for me to learn more about c++, and I plan to add
 
 ## Usage
 ```
--i (imperial) -k (kelvin) | Both of these are optional. Defaults to metric
-nweather Country 'Country Name'
-nweather -h Country 'County Name'
-nweather -c lat long
-nweather -r lat long count
+  ./nweather [OPTION...]
+
+  -i, --imperial         enable imperial units
+  -k, --kelvin           enable kelvin units
+  -h, --humidity         enable humidity setting
+  -c, --coordinates arg  allow coordinates to be used
+  -r, --radius arg       get the radius around an area
+  -d, --description      get the description of the weather
+  -u, --usage            usage information
+
 ```
 
 ## Building
-`make`
-Then move to /bin/
+`./make.sh`
+The executable is in `./build`. From there you can move it to `/bin`, or `/usr/local/bin`
 
 ## Todo
-* Add a flag which will output an emoji based on description
 * Add a flag which will show stats about the weather in one line, which could be used in your statusbar

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libnetworkclient.a  CMakeFiles/networkclient.dir/networkClient.cpp.o
-/usr/bin/ranlib libnetworkclient.a

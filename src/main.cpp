@@ -7,7 +7,7 @@
 #include <sstream>
 #include <iomanip>
 #include <stdlib.h>
-#include "./cxxopts/cxxopts.hpp"
+#include "cxxopts-2.2.1/include/cxxopts.hpp"
 #include <optional>
 #include "./networkclient/networkClient.h"
 #include "weather/weather.h"

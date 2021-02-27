@@ -3,7 +3,7 @@
 #include "../networkclient/networkClient.h"
 #include "weather.h"
 #include "../URI/URI.h"
-#include "../nlohmann/json.hpp"
+#include "../json/single_include/nlohmann/json.hpp"
 
 networkClient::networkTools network;
 

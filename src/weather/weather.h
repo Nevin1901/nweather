@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../URI/URI.h"
-#include "../nlohmann/json.hpp"
+#include "../json/single_include/nlohmann/json.hpp"
 
 using json = nlohmann::json;
 

@@ -19,7 +19,6 @@
 #include <vector>
 
 #ifdef _WIN32
-#  pragma comment(lib, "ws2_32.lib")
 #  pragma push_macro("WIN32_LEAN_AND_MEAN")
 #  pragma push_macro("NOMINMAX")
 #  ifndef WIN32_LEAN_AND_MEAN

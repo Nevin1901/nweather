@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../include/networkClient.h"
 #include "../json/single_include/nlohmann/json.hpp"
+#pragma comment(lib, "ws2_32.lib")
 #include "../HTTPRequest/HTTPRequest.hpp"
 
 namespace networkClient {

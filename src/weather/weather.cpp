@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
-#include "../networkclient/networkClient.h"
-#include "weather.h"
+#include "../include/networkClient.h"
+#include "../include/weather.h"
 #include "../URI/URI.h"
 #include "../json/single_include/nlohmann/json.hpp"
 

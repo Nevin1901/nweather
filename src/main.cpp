@@ -1,7 +1,6 @@
 #include <iostream>
 // #include "nevinAPI/nweatherAPI.h"
 #include <string>
-#include <unistd.h>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
@@ -9,8 +8,8 @@
 #include <stdlib.h>
 #include "cxxopts-2.2.1/include/cxxopts.hpp"
 #include <optional>
-#include "./networkclient/networkClient.h"
-#include "weather/weather.h"
+#include "./include/networkClient.h"
+#include "./include/weather.h"
 
 /*
  *	Hello random person debugging this program

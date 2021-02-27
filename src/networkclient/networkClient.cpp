@@ -1,5 +1,5 @@
 #include <iostream>
-#include "networkClient.h"
+#include "../include/networkClient.h"
 #include "../json/single_include/nlohmann/json.hpp"
 #include "../HTTPRequest/HTTPRequest.hpp"
 

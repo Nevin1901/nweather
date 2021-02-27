@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 	//lonInput = argv[2];
 	*/
 
-    std::map<std::string, std::string> shortUnits = {{"metric", "C°"}, {"imperial", "F°"}, {"kelvin", "K°"}};
+    std::map<std::string, std::string> shortUnits = {{"metric", "ºC"}, {"imperial", "ºF"}, {"kelvin", "ºK"}};
 
 	cxxopts::Options options(argv[0]);
 

@@ -57,8 +57,8 @@ int main(int argc, char *argv[]) {
 		("i,imperial", "enable imperial units")
 		("k,kelvin", "enable kelvin units")
 		("h,humidity", "enable humidity setting")
-		("c,coordinates", "allow coordinates to be used", cxxopts::value(coordinates))
-		("r,radius", "get the radius around an area", cxxopts::value<int>(radius))
+		("c,coordinates", "allow coordinates to be used", cxxopts::value(coordinates), "[x,y]")
+		("r,radius", "get the radius around an area", cxxopts::value<int>(radius), "[0-50]")
 		("d,description", "get the description of the weather")
 		("u,usage", "usage information");
 

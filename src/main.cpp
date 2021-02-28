@@ -9,6 +9,10 @@
 #include "cxxopts-2.2.1/include/cxxopts.hpp"
 // #include <optional>
 #include "./include/weather.h"
+#ifdef _WIN32
+	#include <io.h>
+	#include<fcntl.h>
+#endif
 
 /*
  *	Hello random person debugging this program
@@ -45,7 +49,7 @@ int main(int argc, char *argv[]) {
 	//lonInput = argv[2];
 	*/
 
-    std::map<std::string, char> shortUnits = {{"metric", 'C'}, {"imperial", 'F'}, {"kelvin", 'K'}};
+    std::map<std::string, const char*> shortUnits = {{"metric", u8"\u00B0C"}, {"imperial", u8"\u00B0F"}, {"kelvin", u8"\u00B0K"}};
 
 	cxxopts::Options options(argv[0]);
 
@@ -79,7 +83,7 @@ int main(int argc, char *argv[]) {
 
 	if (result.count("c")) {
 		if (coordinates.size() <= 1 || coordinates.size() > 2) {
-			std::cout << "Error: Invalid amount of coordinates" << std::endl;
+			std::wcout << "Error: Invalid amount of coordinates" << std::endl;
 			return 0;
 		}
 		std::map<std::string, float> weatherCoordinates = weather.getWeatherByCoordinates(coordinates[0], coordinates[1], radius);
@@ -90,15 +94,22 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (result.count("h")) {
-		std::cout << weather.getLocalWeatherHumidity() << std::endl;
+		std::wcout << weather.getLocalWeatherHumidity() << std::endl;
 		return 0;
 	}
 
 	else {
-		
-		std::cout << weather.getLocalWeather();
+		#ifdef _WIN32
+			_setmode(_fileno(stdout), _O_U16TEXT);
+		#endif
 
-		std::cout << "\370" << shortUnits[nweatherUnits]; // todo: convert nweatherUnits to an enum
+<<<<<<< HEAD
+		std::cout << shortUnits[nweatherUnits] << std::endl; // todo: convert nweatherUnits to an enum
+=======
+		std::wcout << weather.getLocalWeather();
+
+		std::wcout << L"\x00B0" << shortUnits[nweatherUnits]; // todo: convert nweatherUnits to an enum
+>>>>>>> parent of c8cdf05 (reverted from unicode)
 
 		return 0;
 	}

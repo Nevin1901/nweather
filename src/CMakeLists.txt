@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 project(nweather)
 
 add_executable(nweather main.cpp)
@@ -18,9 +22,6 @@ add_library(nlohmann INTERFACE)
 
 add_subdirectory(networkclient)
 add_subdirectory(weather)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 target_link_libraries(nweather PUBLIC weather networkclient PRIVATE nlohmann)
 

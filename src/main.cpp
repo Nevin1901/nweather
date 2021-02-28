@@ -103,14 +103,9 @@ int main(int argc, char *argv[]) {
 			_setmode(_fileno(stdout), _O_U16TEXT);
 		#endif
 
-<<<<<<< HEAD
+		std::cout << weather.getLocalWeather();
+
 		std::cout << shortUnits[nweatherUnits] << std::endl; // todo: convert nweatherUnits to an enum
-=======
-		std::wcout << weather.getLocalWeather();
-
-		std::wcout << L"\x00B0" << shortUnits[nweatherUnits]; // todo: convert nweatherUnits to an enum
->>>>>>> parent of c8cdf05 (reverted from unicode)
-
 		return 0;
 	}
 

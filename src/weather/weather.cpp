@@ -19,6 +19,20 @@ float Weather::getLocalWeatherHumidity() {
 	return localWeather["main"]["humidity"];
 }
 
+std::map<std::string, int> Weather::getWeatherHumidityByCoordinates(int lat, int lon, int radius) {
+	json localWeather = getWeatherDataByCoordinates(lat, lon, radius);
+	if (localWeather["cod"] == nlohmann::detail::value_t::null) {
+		std::cerr << "Error: Failed to parse temperature data" << std::endl;
+		exit(-1);
+	} else {
+		std::map<std::string, int> weatherData;
+		for (auto& el : localWeather["list"].items()) {
+			weatherData.insert({static_cast<std::string>(el.value()["name"]), static_cast<int>(el.value()["main"]["humidity"])});
+		}
+		return weatherData;
+	}
+}
+
 std::map<std::string, float> Weather::getWeatherByCoordinates(int lat, int lon, int radius) {
 	json localWeather = getWeatherDataByCoordinates(lat, lon, radius);
 	if (localWeather["cod"] == nlohmann::detail::value_t::null) {

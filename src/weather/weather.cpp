@@ -20,7 +20,7 @@ float Weather::getLocalWeatherHumidity() {
 }
 
 std::map<std::string, int> Weather::getWeatherHumidityByCoordinates(int lat, int lon, int radius) {
-	json localWeather = getWeatherDataByCoordinates(lat, lon, radius);
+	json localWeather = getWeatherDataByCoordinates(lat, lon, radius); // TODO: Have -l for location
 	if (localWeather["cod"] == nlohmann::detail::value_t::null) {
 		std::cerr << "Error: Failed to parse temperature data" << std::endl;
 		exit(-1);
@@ -45,6 +45,17 @@ std::map<std::string, float> Weather::getWeatherByCoordinates(int lat, int lon, 
 			weatherData.insert({static_cast<std::string>(el.value()["name"]), static_cast<float>(el.value()["main"]["temp"])});
 		}
 		return weatherData;
+	}
+}
+
+std::string Weather::getLocalWeatherDescription() {
+	json localWeather = getLocalWeatherData();
+	if (localWeather["cod"] == 200) {
+		return localWeather["weather"][0]["description"];
+	}
+	else {
+		std::cerr << "Error: failed to get weather data. Error code: " <<  localWeather["cod"];
+		exit(-1);
 	}
 }
 

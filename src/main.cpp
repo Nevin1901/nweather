@@ -83,6 +83,10 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 
+	if (result.count("d")) {
+		std::cout << weather.getLocalWeatherDescription() << std::endl;
+	}
+
 	else {
 		#ifdef _WIN32
 			_setmode(_fileno(stdout), _O_U16TEXT); // while the console is set to the correct mode, the degrees

@@ -10,6 +10,7 @@ class Weather {
 		float getLocalWeatherHumidity();
 		std::map<std::string, float> getWeatherByCoordinates(int lat, int lon, int radius);
 		std::map<std::string, int> getWeatherHumidityByCoordinates(int lat, int lon, int radius);
+		std::string getLocalWeatherDescription();
 		Weather(std::string units) {
 			nweatherUnits = units;
 		}
